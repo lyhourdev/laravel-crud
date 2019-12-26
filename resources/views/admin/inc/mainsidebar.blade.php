@@ -29,6 +29,12 @@
                     <p class="text">Item</p>
                 </a>
             </li>
+            <li class="nav-item">
+                <a href="{{url('/product')}}" class="nav-link">
+                    <i class="nav-icon far fa-circle text-info"></i>
+                    <p class="text">Product</p>
+                </a>
+            </li>
         </ul>
     </nav>
     <!-- /.sidebar -->

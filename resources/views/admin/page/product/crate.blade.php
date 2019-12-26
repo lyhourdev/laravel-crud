@@ -4,10 +4,10 @@
 
 @section('content_header')
     @include('admin.inc.content_header',[
-    'title' => 'Item Crate',
-    'url' => '/item',
-    'url_title' => 'Item',
-    'active_title' => 'Item Crate'
+    'title' => 'product Crate',
+    'url' => '/product',
+    'url_title' => 'product',
+    'active_title' => 'product Crate'
     ])
 @endsection
 
@@ -18,7 +18,7 @@
         </div>
         <!-- /.card-header -->
         <!-- form start -->
-        <form method="post" action="{{url('/item')}}" role="form">
+        <form method="post" action="{{url('/product')}}" role="form">
             @csrf
             <div class="card-body">
                 <div class="form-group">

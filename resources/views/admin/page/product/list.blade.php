@@ -13,18 +13,16 @@
     <div class="card">
         <div class="card-header">
             <h3 class="card-title">
-                <a href="{{url('/item/crate')}}" class="btn btn-block btn-primary btn-xs">Add Item</a>
+                <a href="{{url('/product/crate')}}" class="btn btn-block btn-primary btn-xs">Add Item</a>
             </h3>
 
             <div class="card-tools">
                 <div class="input-group input-group-sm" style="width: 150px;">
-                    <form method="get" action="{{url('item')}}">
-                        <input value="{{$search}}" type="text" name="search" class="form-control float-right" placeholder="Search">
+                    <input type="text" name="table_search" class="form-control float-right" placeholder="Search">
 
-                        <div class="input-group-append">
-                            <button type="submit" class="btn btn-default"><i class="fas fa-search"></i></button>
-                        </div>
-                    </form>
+                    <div class="input-group-append">
+                        <button type="submit" class="btn btn-default"><i class="fas fa-search"></i></button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -52,8 +50,8 @@
                         <td>{{$item->qty}}</td>
                         <td>{{$item->price}}</td>
                         <td>
-                            <a href="{{url('/item/edit/'.$item->id)}}" class="btn btn-block btn-warning btn-xs">Edit</a>
-                            <form method="post" action="{{url('/item/'.$item->id)}}">
+                            <a href="{{url('/product/edit/'.$item->id)}}" class="btn btn-block btn-warning btn-xs">Edit</a>
+                            <form method="post" action="{{url('/product/'.$item->id)}}">
                                 @csrf
                                 @method('delete')
                                 <button type="submit" class="btn btn-block btn-danger btn-xs">Delete</button>
@@ -64,7 +62,7 @@
                 </tbody>
             </table>
         </div>
-        <!-- /.card-body -->
+    <!-- /.card-body -->
     </div>
     {{ $items->links() }}
 @endsection

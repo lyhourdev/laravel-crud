@@ -4,33 +4,20 @@ namespace App\Http\Controllers;
 
 use App\Models\Admin\Item;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
-class ItemController extends Controller
+class ProductController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index()
     {
-        $search = $request->search;
-
-        if ($search != null){
-            $items = Item::where('name','like','%'.$search.'%')
-                ->OrWhere('item_code','like','%'.$search.'%')
-                ->OrWhere('barcode','like','%'.$search.'%')
-                ->paginate(6);
-        }else{
-            $items = Item::paginate(6);
-        }
-
 //        $items = DB::table('items')->get();
-
+        $items = Item::paginate(6);
         return view('admin.page.item.list', [
-            'items' => $items,
-            'search' => $search
+            'items' => $items
         ]);
     }
 
@@ -67,13 +54,13 @@ class ItemController extends Controller
             'price' => 'numeric',
         ]);
         //for ($i = 0; $i < 1000; $i++) {
-            $item = new Item();
-            $item->item_code = $request->item_code;
-            $item->name = $request->name;
-            $item->barcode = $request->barcode;
-            $item->qty = $request->qty;
-            $item->price = $request->price;
-            $item->save();
+        $item = new Item();
+        $item->item_code = $request->item_code;
+        $item->name = $request->name;
+        $item->barcode = $request->barcode;
+        $item->qty = $request->qty;
+        $item->price = $request->price;
+        $item->save();
         //}
 
 
