@@ -26,8 +26,6 @@ class ItemController extends Controller
             $items = Item::paginate(6);
         }
 
-//        $items = DB::table('items')->get();
-
         return view('admin.page.item.list', [
             'items' => $items,
             'search' => $search

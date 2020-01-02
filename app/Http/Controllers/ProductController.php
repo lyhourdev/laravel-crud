@@ -14,11 +14,8 @@ class ProductController extends Controller
      */
     public function index()
     {
-//        $items = DB::table('items')->get();
-        $items = Item::paginate(6);
-        return view('admin.page.item.list', [
-            'items' => $items
-        ]);
+
+        return view('admin.page.product.list');
     }
 
     /**
@@ -39,21 +36,7 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-//        DB::table('items')->insert([
-//            'item_code'=>$request->item_code,
-//            'name'=>$request->name,
-//            'barcode'=>$request->barcode,
-//            'qty'=>$request->qty,
-//            'price'=>$request->price,
-//        ]);
 
-        $validatedData = $request->validate([
-            'item_code' => 'required|min:2|max:5',
-            'name' => 'required',
-            'qty' => 'numeric',
-            'price' => 'numeric',
-        ]);
-        //for ($i = 0; $i < 1000; $i++) {
         $item = new Item();
         $item->item_code = $request->item_code;
         $item->name = $request->name;
@@ -61,10 +44,8 @@ class ProductController extends Controller
         $item->qty = $request->qty;
         $item->price = $request->price;
         $item->save();
-        //}
 
-
-        return redirect('item');
+        return response()->json($item);
     }
 
     /**

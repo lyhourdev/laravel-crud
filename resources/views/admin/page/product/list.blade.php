@@ -13,7 +13,9 @@
     <div class="card">
         <div class="card-header">
             <h3 class="card-title">
-                <a href="{{url('/product/crate')}}" class="btn btn-block btn-primary btn-xs">Add Item</a>
+                <button class="btn btn-block btn-primary btn-xs" data-toggle="modal" data-target="#product_from">Add
+                    Item
+                </button>
             </h3>
 
             <div class="card-tools">
@@ -41,28 +43,165 @@
                 </tr>
                 </thead>
                 <tbody>
-                @foreach($items as $item)
-                    <tr>
-                        <td>{{$item->id}}</td>
-                        <td>{{$item->item_code}}</td>
-                        <td>{{$item->name}}</td>
-                        <td>{{$item->barcode}}</td>
-                        <td>{{$item->qty}}</td>
-                        <td>{{$item->price}}</td>
-                        <td>
-                            <a href="{{url('/product/edit/'.$item->id)}}" class="btn btn-block btn-warning btn-xs">Edit</a>
-                            <form method="post" action="{{url('/product/'.$item->id)}}">
-                                @csrf
-                                @method('delete')
-                                <button type="submit" class="btn btn-block btn-danger btn-xs">Delete</button>
-                            </form>
-                        </td>
-                    </tr>
-                @endforeach
+                <td>aaaaaa</td>
+                <td>aaaaaa</td>
+                <td>aaaaaa</td>
+                <td>aaaaaa</td>
+                <td>aaaaaa</td>
+                <td>aaaaaa</td>
+                <td>aaaaaa</td>
                 </tbody>
             </table>
         </div>
-    <!-- /.card-body -->
+        <!-- /.card-body -->
     </div>
-    {{ $items->links() }}
+
+    <div class="modal fade" id="product_from">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Add Product</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    @csrf
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">Item Code</label>
+                        <input value="" name="item_code" type="text" class="form-control  " id="item_code"
+                               placeholder="Enter Item Code">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">Item Name</label>
+                        <input value="" name="name" type="text" class="form-control  " id="name"
+                               placeholder="Enter Name">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">Item Barcode</label>
+                        <input value="" name="barcode" type="text" class="form-control" id="barcode"
+                               placeholder="Enter Barcode">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">Item QTY</label>
+                        <input value="" name="qty" type="text" class="form-control  " id="qty"
+                               placeholder="Enter QTY">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">Item Price</label>
+                        <input value="" name="price" type="text" class="form-control  " id="price"
+                               placeholder="Enter Price">
+                    </div>
+                </div>
+                <div class="modal-footer justify-content-between">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button id="save" type="button" class="btn btn-primary">Save</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->
+@endsection
+
+@section('script')
+    <script>
+
+        var my_array = [
+            "lyhour",
+            "male",
+            10
+        ];
+        console.log(my_array[1]);
+
+
+        var my_json = {
+            name:"lyhour",
+            gender:"male",
+            age:10
+        };
+        console.log(my_json.name);
+
+
+        var my_json_in_array = [
+            {
+                name:"lyhour",
+                gender:"male",
+                age:10
+            },
+            {
+                name:"vin",
+                gender:"male",
+                age:10
+            }
+        ];
+        console.log(my_json_in_array[1].gender);
+
+
+        var abc = {
+            name:[
+                'name1',
+                'name3',
+            ],
+            gender:[
+                'gender1',
+                'gender2',
+            ]
+        };
+
+        console.log(abc.gender[1]);
+
+        var abcd = {
+            name:[
+                [
+                    "a",
+                    {
+                        a:"a1"
+                    }
+                ],
+                'name3',
+            ],
+            gender:[
+                'gender1',
+                'gender2',
+            ]
+        };
+        console.log('=================================');
+        console.log(abcd.name[0][0]);
+        console.log(abcd.name[0][1].a);
+        console.log(abcd.name[1]);
+
+        var test_ = 10;
+        //console.log($('#item_code').val());
+
+        $('#save').on('click', function () {
+
+            $.ajax({
+                type: 'POST',
+                url: '{{url('/product')}}',
+                dataType: 'json',
+                data: {
+                    item_code: $('#item_code').val(),
+                    name: $('#name').val(),
+                    barcode: $('#barcode').val(),
+                    qty: $('#qty').val(),
+                    price: $('#price').val(),
+                    _token: $("input[name=_token]").val(),
+                },
+                success: function (data) {
+                    console.log(data);
+                },
+                error: function (err) {
+                    alert('no');
+                }
+            });
+
+        });
+
+    </script>
 @endsection
