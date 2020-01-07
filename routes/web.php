@@ -43,7 +43,11 @@ Route::get('/item/edit/{id}', 'ItemController@edit');
 Route::patch('/item/{id}','ItemController@update');
 
 Route::get('/product', 'ProductController@index');
+
 Route::post('/product', 'ProductController@store');
+
+Route::get('/product/data', 'ProductController@getProductData');
+Route::delete('/product', 'ProductController@destroy');
 
 
 

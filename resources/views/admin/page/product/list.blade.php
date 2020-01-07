@@ -43,18 +43,13 @@
                 </tr>
                 </thead>
                 <tbody>
-                <td>aaaaaa</td>
-                <td>aaaaaa</td>
-                <td>aaaaaa</td>
-                <td>aaaaaa</td>
-                <td>aaaaaa</td>
-                <td>aaaaaa</td>
-                <td>aaaaaa</td>
+
                 </tbody>
             </table>
         </div>
         <!-- /.card-body -->
     </div>
+    <span id="paginate"></span>
 
     <div class="modal fade" id="product_from">
         <div class="modal-dialog modal-xl">
@@ -107,78 +102,60 @@
         <!-- /.modal-dialog -->
     </div>
     <!-- /.modal -->
+
+
 @endsection
 
 @section('script')
     <script>
-
-        var my_array = [
-            "lyhour",
-            "male",
-            10
-        ];
-        console.log(my_array[1]);
-
-
-        var my_json = {
-            name:"lyhour",
-            gender:"male",
-            age:10
-        };
-        console.log(my_json.name);
+        // $('.btn_aa').on('click',function () {
+        //     console.log('A is Click !!');
+        //     $('#btn_bb').html('ZZZZZZ');
+        // });
+        // $('#btn_bb').on('click',function () {
+        //     console.log('B is Click !!');
+        // });
+        // $('button').on('click',function () {
+        //     console.log('C is Click !!');
+        // });
 
 
-        var my_json_in_array = [
-            {
-                name:"lyhour",
-                gender:"male",
-                age:10
-            },
-            {
-                name:"vin",
-                gender:"male",
-                age:10
-            }
-        ];
-        console.log(my_json_in_array[1].gender);
+        // var jkhaskjhd = 'adasdasdd';
+        // console.log(jkhaskjhd);
+        //
+        // var my_array = [
+        //     'a',
+        //     'b',
+        //     'c',
+        //     'd'
+        // ];
+        // console.log(my_array.length);
+        //
+        // jQuery.each(my_array, function(key, value) {
+        //     // do something with `item` (or `this` is also `item` if you like)
+        //     console.log(key+' => '+value);
+        // });
+        // console.log('========================');
+        // var array_json = {
+        //     a:'avvvv',
+        //     b:'b',
+        //     c:'cxxxx'
+        // };
+        //
+        //
+        // jQuery.each(array_json, function(key, value) {
+        //     // do something with `item` (or `this` is also `item` if you like)
+        //     console.log(key+' => '+value);
+        // });
 
-
-        var abc = {
-            name:[
-                'name1',
-                'name3',
-            ],
-            gender:[
-                'gender1',
-                'gender2',
-            ]
-        };
-
-        console.log(abc.gender[1]);
-
-        var abcd = {
-            name:[
-                [
-                    "a",
-                    {
-                        a:"a1"
-                    }
-                ],
-                'name3',
-            ],
-            gender:[
-                'gender1',
-                'gender2',
-            ]
-        };
-        console.log('=================================');
-        console.log(abcd.name[0][0]);
-        console.log(abcd.name[0][1].a);
-        console.log(abcd.name[1]);
-
-        var test_ = 10;
-        //console.log($('#item_code').val());
-
+        var xx = 10;
+        var hhh = '<h1>aaaaaa</h1>\n' + '<h1>' + xx + '</h1>';
+        hhh += 'XXXXXXX\n';
+        hhh += 'VVVVVV\n';
+        hhh += 'CCCCCC\n';
+        console.log(hhh);
+        // $('#abcd').html(hhh);
+        //
         $('#save').on('click', function () {
 
             $.ajax({
@@ -195,6 +172,29 @@
                 },
                 success: function (data) {
                     console.log(data);
+                    var html = ' <tr>\n' +
+                        '                        <td>' + data.id + '</td>\n' +
+                        '                        <td>' + data.item_code + '</td>\n' +
+                        '                        <td>' + data.name + '</td>\n' +
+                        '                        <td>' + data.barcode + '</td>\n' +
+                        '                        <td>' + data.qty + '</td>\n' +
+                        '                        <td>' + data.price + '</td>\n' +
+                        '                        <td>\n' +
+                        '        <button class="btn btn-block btn-warning btn-xs">Edit</button>\n' +
+                        '         <button class="btn btn-block btn-danger btn-xs">Delete</button>\n' +
+                        '    </td>' +
+                        '                    </tr>';
+
+                    //$('tbody').append(html);//add ពីក្រោម
+                    $('tbody').prepend(html);//add ពីលើ
+                    $('#product_from').modal('hide');
+
+                    $('#item_code').val('');
+                    $('#name').val('');
+                    $('#barcode').val('');
+                    $('#qty').val('');
+                    $('#price').val('');
+
                 },
                 error: function (err) {
                     alert('no');
@@ -202,6 +202,72 @@
             });
 
         });
+
+        function getMyData(url){
+            $.ajax({
+                type: 'GET',
+                url: url,
+                dataType: 'json',
+                data: {},
+                success: function (value) {
+                    // console.log(value.paginate);
+                    var html = '';
+                    jQuery.each(value.my_value.data, function (key, data_) {
+                        html += ' <tr id="tr_' + data_.id + '">\n' +
+                            '                        <td>' + data_.id + '</td>\n' +
+                            '                        <td>' + data_.item_code + '</td>\n' +
+                            '                        <td>' + data_.name + '</td>\n' +
+                            '                        <td>' + data_.barcode + '</td>\n' +
+                            '                        <td>' + data_.qty + '</td>\n' +
+                            '                        <td>' + data_.price + '</td>\n' +
+                            '                        <td>\n' +
+                            '        <button class="btn btn-block btn-warning btn-xs">Edit</button>\n' +
+                            '        <button class="btn btn-block btn-danger btn-xs btn_delete" data-id="' + data_.id + '">Delete</button>\n' +
+                            '    </td>' +
+                            '                    </tr>';
+                    });
+                    $('tbody').html(html);//add ពីលើ
+                    $('#paginate').html(value.paginate);//add ពីលើ
+                },
+                error: function (err) {
+                    alert('no');
+                }
+            });
+        }
+
+        getMyData('{{url('/product/data')}}');
+
+        $(".content").delegate(".my_pagination", "click", function(e) {
+            e.preventDefault();
+            console.log($(this).attr('href'));
+            getMyData($(this).attr('href'));
+        });
+        $(".content").delegate(".btn_delete", "click", function() {
+            console.log($(this).data('id'));
+
+            if(confirm("Press a button yes to delete !!")){
+                $.ajax({
+                    type: 'DELETE',
+                    url: '{{url('product')}}',
+                    dataType: 'json',
+                    data: {
+                        id:$(this).data('id'),
+                        _token: $("input[name=_token]").val(),
+                    },
+                    success: function (value) {
+                        console.log(value);
+                        $('#tr_'+value.id).remove();
+                    },
+                    error: function (err) {
+                        alert('no');
+                    }
+                });
+            }
+
+        });
+
+
+
 
     </script>
 @endsection

@@ -109,11 +109,24 @@ class ProductController extends Controller
      * @param int $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request)
     {
 //        DB::table('items')->where('id',$id)->delete();
-        $item = Item::find($id);
+        $item = Item::find($request->id);
         $item->delete();
-        return redirect('item');
+        return response()->json($item);
+    }
+
+    public function getProductData(){
+        $peoduct = Item::orderBy('id', 'desc')->paginate(5);
+        return response()->json([
+            'my_value' => $peoduct,
+            'paginate' => view('admin.inc.paginate',['peoduct'=>$peoduct])->render()
+        ]);
+//        return response()->json([
+//            'data'=>$peoduct,
+//            'paginate'=>view('admin.inc.paginate',['peoduct'=>$peoduct])->render()
+//        ]);
+
     }
 }
