@@ -28,25 +28,7 @@ class ProductController extends Controller
         return view('admin.page.item.crate');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
 
-        $item = new Item();
-        $item->item_code = $request->item_code;
-        $item->name = $request->name;
-        $item->barcode = $request->barcode;
-        $item->qty = $request->qty;
-        $item->price = $request->price;
-        $item->save();
-
-        return response()->json($item);
-    }
 
     /**
      * Display the specified resource.
@@ -65,13 +47,11 @@ class ProductController extends Controller
      * @param int $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Request $request)
     {
 //        $item = DB::table('items')->find($id);
-        $item = Item::find($id);
-        return view('admin.page.item.edit', [
-            'item' => $item
-        ]);
+        $item = Item::find($request->id);
+        return response()->json($item);
     }
 
     /**
@@ -101,6 +81,30 @@ class ProductController extends Controller
 
 
         return redirect('item');
+    }
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $request)
+    {
+
+        if ($request->id){
+            $item = Item::find($request->id);
+        }else{
+            $item = new Item();
+        }
+
+        $item->item_code = $request->item_code;
+        $item->name = $request->name;
+        $item->barcode = $request->barcode;
+        $item->qty = $request->qty;
+        $item->price = $request->price;
+        $item->save();
+
+        return response()->json($item);
     }
 
     /**

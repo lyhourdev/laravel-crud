@@ -11,7 +11,7 @@
     <div class="card">
         <div class="card-header">
             <h3 class="card-title">
-                <button class="btn btn-block btn-primary btn-xs" data-toggle="modal" data-target="#product_from">Add
+                <button class="btn btn-block btn-primary btn-xs" id="add_pro" data-toggle="modal" data-target="#product_from">Add
                     Item
                 </button>
             </h3>
@@ -60,6 +60,7 @@
                 </div>
                 <div class="modal-body">
                     <?php echo csrf_field(); ?>
+                    <input type="hidden" id="id">
                     <div class="form-group">
                         <label for="exampleInputEmail1">Item Code</label>
                         <input value="" name="item_code" type="text" class="form-control  " id="item_code"
@@ -145,13 +146,13 @@
         //     // do something with `item` (or `this` is also `item` if you like)
         //     console.log(key+' => '+value);
         // });
-
-        var xx = 10;
-        var hhh = '<h1>aaaaaa</h1>\n' + '<h1>' + xx + '</h1>';
-        hhh += 'XXXXXXX\n';
-        hhh += 'VVVVVV\n';
-        hhh += 'CCCCCC\n';
-        console.log(hhh);
+        //
+        // var xx = 10;
+        // var hhh = '<h1>aaaaaa</h1>\n' + '<h1>' + xx + '</h1>';
+        // hhh += 'XXXXXXX\n';
+        // hhh += 'VVVVVV\n';
+        // hhh += 'CCCCCC\n';
+        // console.log(hhh);
         // $('#abcd').html(hhh);
         //
         $('#save').on('click', function () {
@@ -161,6 +162,7 @@
                 url: '<?php echo e(url('/product')); ?>',
                 dataType: 'json',
                 data: {
+                    id:$('#id').val(),
                     item_code: $('#item_code').val(),
                     name: $('#name').val(),
                     barcode: $('#barcode').val(),
@@ -169,29 +171,44 @@
                     _token: $("input[name=_token]").val(),
                 },
                 success: function (data) {
-                    console.log(data);
-                    var html = ' <tr>\n' +
-                        '                        <td>' + data.id + '</td>\n' +
-                        '                        <td>' + data.item_code + '</td>\n' +
-                        '                        <td>' + data.name + '</td>\n' +
-                        '                        <td>' + data.barcode + '</td>\n' +
-                        '                        <td>' + data.qty + '</td>\n' +
-                        '                        <td>' + data.price + '</td>\n' +
-                        '                        <td>\n' +
-                        '        <button class="btn btn-block btn-warning btn-xs">Edit</button>\n' +
-                        '         <button class="btn btn-block btn-danger btn-xs">Delete</button>\n' +
-                        '    </td>' +
-                        '                    </tr>';
+                    if ($('#id').val()){
 
-                    //$('tbody').append(html);//add ពីក្រោម
-                    $('tbody').prepend(html);//add ពីលើ
+                        var html =
+                            '                        <td>' + data.id + '</td>\n' +
+                            '                        <td>' + data.item_code + '</td>\n' +
+                            '                        <td>' + data.name + '</td>\n' +
+                            '                        <td>' + data.barcode + '</td>\n' +
+                            '                        <td>' + data.qty + '</td>\n' +
+                            '                        <td>' + data.price + '</td>\n' +
+                            '                        <td>\n' +
+                            '        <button class="btn btn-block btn-warning btn-xs btn_edit" data-id="' + data.id + '">Edit</button>\n' +
+                            '         <button class="btn btn-block btn-danger btn-xs btn_delete" data-id="' + data.id + '">Delete</button>\n' +
+                            '    </td>';
+
+                        //$('tbody').append(html);//add ពីក្រោម
+                        $('#tr_'+data.id).html(html);
+                    }else {
+
+                        var html = ' <tr id="tr_' + data.id + '">\n' +
+                            '                        <td>' + data.id + '</td>\n' +
+                            '                        <td>' + data.item_code + '</td>\n' +
+                            '                        <td>' + data.name + '</td>\n' +
+                            '                        <td>' + data.barcode + '</td>\n' +
+                            '                        <td>' + data.qty + '</td>\n' +
+                            '                        <td>' + data.price + '</td>\n' +
+                            '                        <td>\n' +
+                            '        <button class="btn btn-block btn-warning btn-xs btn_edit" data-id="' + data.id + '">Edit</button>\n' +
+                            '         <button class="btn btn-block btn-danger btn-xs  btn_delete" data-id="' + data.id + '">Delete</button>\n' +
+                            '    </td>' +
+                            '                    </tr>';
+
+                        //$('tbody').append(html);//add ពីក្រោម
+                        $('tbody').prepend(html);//add ពីលើ
+                    }
+
                     $('#product_from').modal('hide');
 
-                    $('#item_code').val('');
-                    $('#name').val('');
-                    $('#barcode').val('');
-                    $('#qty').val('');
-                    $('#price').val('');
+                    clearInput();
 
                 },
                 error: function (err) {
@@ -201,7 +218,7 @@
 
         });
 
-        function getMyData(url){
+        function getMyData(url) {
             $.ajax({
                 type: 'GET',
                 url: url,
@@ -219,7 +236,7 @@
                             '                        <td>' + data_.qty + '</td>\n' +
                             '                        <td>' + data_.price + '</td>\n' +
                             '                        <td>\n' +
-                            '        <button class="btn btn-block btn-warning btn-xs">Edit</button>\n' +
+                            '        <button class="btn btn-block btn-warning btn-xs btn_edit" data-id="' + data_.id + '">Edit</button>\n' +
                             '        <button class="btn btn-block btn-danger btn-xs btn_delete" data-id="' + data_.id + '">Delete</button>\n' +
                             '    </td>' +
                             '                    </tr>';
@@ -235,26 +252,29 @@
 
         getMyData('<?php echo e(url('/product/data')); ?>');
 
-        $(".content").delegate(".my_pagination", "click", function(e) {
+        $(".content").delegate(".my_pagination", "click", function (e) {
             e.preventDefault();
             console.log($(this).attr('href'));
             getMyData($(this).attr('href'));
         });
-        $(".content").delegate(".btn_delete", "click", function() {
-            console.log($(this).data('id'));
 
-            if(confirm("Press a button yes to delete !!")){
+        $(".content").delegate(".btn_delete", "click", function () {
+            // console.log($(this).data('id'));
+
+            // console.log(confirm("Press a button yes to delete !!"));
+
+            if (confirm("Press a button yes to delete !!")) {
                 $.ajax({
                     type: 'DELETE',
                     url: '<?php echo e(url('product')); ?>',
                     dataType: 'json',
                     data: {
-                        id:$(this).data('id'),
+                        id: $(this).data('id'),
                         _token: $("input[name=_token]").val(),
                     },
                     success: function (value) {
                         console.log(value);
-                        $('#tr_'+value.id).remove();
+                        $('#tr_' + value.id).remove();
                     },
                     error: function (err) {
                         alert('no');
@@ -264,7 +284,49 @@
 
         });
 
+        // $('.btn_edit').on('click',function () {
+        //     console.log('asdasd');
+        // });
 
+        $("table").delegate(".btn_edit", "click", function () {
+            $.ajax({
+                type: 'GET',
+                url: '<?php echo e(url('/item/edit')); ?>',
+                dataType: 'json',
+                data: {
+                    id: $(this).data('id')
+                },
+                success: function (value) {
+
+                    $('#id').val(value.id);
+                    $('#item_code').val(value.item_code);
+                    $('#name').val(value.name);
+                    $('#barcode').val(value.barcode);
+                    $('#qty').val(value.qty);
+                    $('#price').val(value.price);
+
+                },
+                error: function (err) {
+                    alert('no');
+                }
+            });
+
+            $('#product_from').modal('show');
+
+        });
+
+        function clearInput() {
+            $('#id').val('');
+            $('#item_code').val('');
+            $('#name').val('');
+            $('#barcode').val('');
+            $('#qty').val('');
+            $('#price').val('');
+        }
+
+        $('#add_pro').on('click',function () {
+            clearInput();
+        });
 
 
     </script>

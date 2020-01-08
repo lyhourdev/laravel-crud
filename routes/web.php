@@ -48,6 +48,7 @@ Route::post('/product', 'ProductController@store');
 
 Route::get('/product/data', 'ProductController@getProductData');
 Route::delete('/product', 'ProductController@destroy');
+Route::get('/item/edit', 'ProductController@edit');
 
 
 
