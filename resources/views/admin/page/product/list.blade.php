@@ -184,7 +184,7 @@
                             '                        <td>' + data.price + '</td>\n' +
                             '                        <td>\n' +
                             '        <button class="btn btn-block btn-warning btn-xs btn_edit" data-id="' + data.id + '">Edit</button>\n' +
-                            '         <button class="btn btn-block btn-danger btn-xs btn_delete" data-id="' + data.id + '">Delete</button>\n' +
+                            '        <button class="btn btn-block btn-danger btn-xs btn_delete" data-id="' + data.id + '">Delete</button>\n' +
                             '    </td>';
 
                         //$('tbody').append(html);//add ពីក្រោម

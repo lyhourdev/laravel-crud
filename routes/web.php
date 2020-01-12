@@ -51,6 +51,16 @@ Route::delete('/product', 'ProductController@destroy');
 Route::get('/item/edit', 'ProductController@edit');
 
 
+Route::get('/my-data', 'MyDataController@index');
+Route::post('/my-data', 'MyDataController@store');
+
+Route::get('/get/my-data', 'MyDataController@show');
+Route::get('/get/my-data/edit', 'MyDataController@edit');
+
+Route::delete('/my-data', 'MyDataController@destroy');
+
+
+
 
 
 

@@ -71,6 +71,14 @@ class ProductController extends Controller
 //            'price'=>$request->price,
 //        ]);
 
+        $item = new Item();
+        $item->item_code = $request->item_code;
+        $item->name = $request->name;
+        $item->barcode = $request->barcode;
+        $item->qty = $request->qty;
+        $item->price = $request->price;
+        $item->save();
+
         $item = Item::find($id);
         $item->item_code = $request->item_code;
         $item->name = $request->name;
@@ -78,6 +86,8 @@ class ProductController extends Controller
         $item->qty = $request->qty;
         $item->price = $request->price;
         $item->save();
+
+
 
 
         return redirect('item');

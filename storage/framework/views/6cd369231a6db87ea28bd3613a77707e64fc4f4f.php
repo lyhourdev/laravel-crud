@@ -178,7 +178,7 @@
                             '                        <td>' + data.item_code + '</td>\n' +
                             '                        <td>' + data.name + '</td>\n' +
                             '                        <td>' + data.barcode + '</td>\n' +
-                            '                        <td>' + data.qty + '</td>\n' +
+                            '             q           <td>' + data.qty + '</td>\n' +
                             '                        <td>' + data.price + '</td>\n' +
                             '                        <td>\n' +
                             '        <button class="btn btn-block btn-warning btn-xs btn_edit" data-id="' + data.id + '">Edit</button>\n' +
