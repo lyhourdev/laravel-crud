@@ -36,6 +36,12 @@ class MyDataController extends Controller
     public function store(Request $request)
     {
 
+        $validatedData = $request->validate([
+            'item_code' => 'required|min:2|max:5',
+            'name' => 'required',
+            'qty' => 'numeric',
+            'price' => 'numeric',
+        ]);
 
         if ($request->id){
             $item = MyData::find($request->id);

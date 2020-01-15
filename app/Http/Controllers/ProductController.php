@@ -100,6 +100,12 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
+        $validatedData = $request->validate([
+            'item_code' => 'required|min:2|max:5',
+            'name' => 'required',
+            'qty' => 'required|numeric',
+            'price' => 'required|numeric',
+        ]);
 
         if ($request->id){
             $item = Item::find($request->id);

@@ -65,31 +65,36 @@
                     <input type="hidden" id="id">
                     <div class="form-group">
                         <label for="exampleInputEmail1">Item Code</label>
-                        <input value="" name="item_code" type="text" class="form-control  " id="item_code"
+                        <span id="err_item_code" class="required"></span>
+                        <input type="text" class="form-control required" id="item_code"
                                placeholder="Enter Item Code">
                     </div>
 
                     <div class="form-group">
                         <label for="exampleInputEmail1">Item Name</label>
-                        <input value="" name="name" type="text" class="form-control  " id="name"
+                        <span id="err_name"  class="required"></span>
+                        <input type="text" class="form-control required" id="name"
                                placeholder="Enter Name">
                     </div>
 
                     <div class="form-group">
                         <label for="exampleInputEmail1">Item Barcode</label>
-                        <input value="" name="barcode" type="text" class="form-control" id="barcode"
+                        <span id="err_barcode" class="required"></span>
+                        <input type="text" class="form-control required" id="barcode"
                                placeholder="Enter Barcode">
                     </div>
 
                     <div class="form-group">
                         <label for="exampleInputEmail1">Item QTY</label>
-                        <input value="" name="qty" type="text" class="form-control  " id="qty"
+                        <span id="err_qty" class="required"></span>
+                        <input type="text" class="form-control required" id="qty"
                                placeholder="Enter QTY">
                     </div>
 
                     <div class="form-group">
                         <label for="exampleInputEmail1">Item Price</label>
-                        <input value="" name="price" type="text" class="form-control  " id="price"
+                        <span id="err_price" class="required"></span>
+                        <input type="text" class="form-control required" id="price"
                                placeholder="Enter Price">
                     </div>
                 </div>
@@ -109,6 +114,8 @@
 
 @section('script')
     <script>
+
+
         // $('.btn_aa').on('click',function () {
         //     console.log('A is Click !!');
         //     $('#btn_bb').html('ZZZZZZ');
@@ -214,9 +221,16 @@
 
                 },
                 error: function (err) {
-                    alert('no');
+                    $(".required").removeClass("is-invalid");
+                    $(".required").html('');
+                    jQuery.each(err.responseJSON.errors, function (key, value) {
+                        $('#'+key).addClass("is-invalid");
+                        $('#err_'+key).html('<label class="col-form-label" for="inputError" style="color: red;" wfd-id="87"><i class="far fa-times-circle"></i> '+value+'</label>');
+                        $('#'+key).val('');
+                    });
                 }
             });
+
 
         });
 
@@ -291,6 +305,8 @@
         // });
 
         $("table").delegate(".btn_edit", "click", function () {
+            $(".required").removeClass("is-invalid");
+            $(".required").html('');
             $.ajax({
                 type: 'GET',
                 url: '{{url('/item/edit')}}',
@@ -327,6 +343,8 @@
         }
 
         $('#add_pro').on('click',function () {
+            $(".required").removeClass("is-invalid");
+            $(".required").html('');
             clearInput();
         });
 

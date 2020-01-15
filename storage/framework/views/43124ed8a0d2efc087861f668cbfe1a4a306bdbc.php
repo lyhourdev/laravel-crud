@@ -90,10 +90,6 @@
 <script src="<?php echo e(asset('adminlte')); ?>/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
 <!-- AdminLTE App -->
 <script src="<?php echo e(asset('adminlte')); ?>/dist/js/adminlte.js"></script>
-<!-- AdminLTE dashboard demo (This is only for demo purposes) -->
-<script src="<?php echo e(asset('adminlte')); ?>/dist/js/pages/dashboard.js"></script>
-<!-- AdminLTE for demo purposes -->
-<script src="<?php echo e(asset('adminlte')); ?>/dist/js/demo.js"></script>
 <?php echo $__env->yieldContent('script'); ?>
 </body>
 </html>

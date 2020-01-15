@@ -1,15 +1,13 @@
-@extends('admin.master')
+<?php $__env->startSection('title','Item | List'); ?>
 
-@section('title','Item | List')
-
-@section('content_header')
-    @include('admin.inc.content_header',[
+<?php $__env->startSection('content_header'); ?>
+    <?php echo $__env->make('admin.inc.content_header',[
 'title' => 'Item List',
 'float_right' => false
-])
-@endsection
+], \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+<?php $__env->stopSection(); ?>
 
-@section('content')
+<?php $__env->startSection('content'); ?>
     <div class="card">
         <div class="card-header">
             <h3 class="card-title">
@@ -60,7 +58,7 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    @csrf
+                    <?php echo csrf_field(); ?>
                     <input type="hidden" id="id">
                     <div class="form-group">
                         <label for="exampleInputEmail1">Item Code</label>
@@ -75,7 +73,8 @@
 
                     <div class="form-group">
                         <label for="exampleInputEmail1">Item Barcode</label>
-                        <input type="text" class="form-control required" id="barcode" placeholder="Enter Barcode">
+                        <input type="text" class="form-control required" id="barcode"
+                               placeholder="Enter Barcode">
                     </div>
 
                     <div class="form-group">
@@ -104,14 +103,14 @@
 
 
 
-@endsection
+<?php $__env->stopSection(); ?>
 
-@section('css')
-    <link rel="stylesheet" href="{{asset('adminlte/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css')}}">
-@endsection
+<?php $__env->startSection('css'); ?>
+    <link rel="stylesheet" href="<?php echo e(asset('adminlte/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css')); ?>">
+<?php $__env->stopSection(); ?>
 
-@section('script')
-    <script src="{{asset('adminlte/plugins/sweetalert2/sweetalert2.min.js')}}"></script>
+<?php $__env->startSection('script'); ?>
+    <script src="<?php echo e(asset('adminlte/plugins/sweetalert2/sweetalert2.min.js')); ?>"></script>
     <script>
         const Toast = Swal.mixin({
             toast: true,
@@ -144,7 +143,7 @@
 
         $.ajax({
             type: 'GET',
-            url: '{{url('/get/my-data')}}',
+            url: '<?php echo e(url('/get/my-data')); ?>',
             dataType: 'json',
             success: function (data_) {
                 var html = '';
@@ -165,7 +164,7 @@
                 $('#save').prop('disabled', true);
                 $.ajax({
                     type: 'POST',
-                    url: '{{url('/my-data')}}',
+                    url: '<?php echo e(url('/my-data')); ?>',
                     dataType: 'json',
                     data: {
                         id: $('#id').val(),
@@ -206,7 +205,7 @@
         $("tbody").delegate(".btn-edit", "click", function () {
             $.ajax({
                 type: 'GET',
-                url: '{{url('/get/my-data/edit')}}',
+                url: '<?php echo e(url('/get/my-data/edit')); ?>',
                 dataType: 'json',
                 data: {
                     id: $(this).data('id')
@@ -236,7 +235,7 @@
                 if (result.value) {
                     $.ajax({
                         type: 'DELETE',
-                        url: '{{url('/my-data')}}',
+                        url: '<?php echo e(url('/my-data')); ?>',
                         dataType: 'json',
                         data: {
                             id: $(this).data('id'),
@@ -304,4 +303,6 @@
 
 
     </script>
-@endsection
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('admin.master', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\Users\Leap Lyhour\PhpstormProjects\laravel-crud\resources\views/admin/page/my_data/list.blade.php ENDPATH**/ ?>

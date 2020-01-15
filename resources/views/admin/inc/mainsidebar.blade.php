@@ -35,6 +35,18 @@
                     <p class="text">Product</p>
                 </a>
             </li>
+            <li class="nav-item">
+                <a href="{{url('/my-data')}}" class="nav-link">
+                    <i class="nav-icon far fa-circle text-info"></i>
+                    <p class="text">my-data</p>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="{{url('/my-data-one')}}" class="nav-link">
+                    <i class="nav-icon far fa-circle text-info"></i>
+                    <p class="text">my-data-one</p>
+                </a>
+            </li>
         </ul>
     </nav>
     <!-- /.sidebar -->
