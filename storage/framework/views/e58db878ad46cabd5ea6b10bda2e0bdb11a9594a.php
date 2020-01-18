@@ -73,8 +73,7 @@
 
                     <div class="form-group">
                         <label for="exampleInputEmail1">Item Barcode</label>
-                        <input type="text" class="form-control required" id="barcode"
-                               placeholder="Enter Barcode">
+                        <input type="text" class="form-control required" id="barcode" placeholder="Enter Barcode">
                     </div>
 
                     <div class="form-group">

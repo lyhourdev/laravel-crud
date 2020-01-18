@@ -64,5 +64,8 @@ Route::delete('/my-data', 'MyDataController@destroy');
 Route::get('/my-data-one', 'MyDataOneController@index');
 Route::post('/my-data-one', 'MyDataOneController@store');
 Route::get('/get/my-data-one', 'MyDataOneController@getData');
+Route::delete('/my-data-one', 'MyDataOneController@delete');
+Route::get('/shoe/my-data-one', 'MyDataOneController@show');
+
 
 

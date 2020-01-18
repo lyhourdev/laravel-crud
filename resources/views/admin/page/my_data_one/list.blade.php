@@ -44,7 +44,7 @@
                 </tr>
                 <tr>
                     @csrf
-                    <th>0</th>
+                    <th id="id">0</th>
                     <th>
                         <span class="er_item_code required"></span>
                         <input type="text" class="form-control required" id="item_code" placeholder="Enter Item Code">
@@ -80,30 +80,55 @@
         </div>
         <!-- /.card-body -->
     </div>
-
+    <span id="pagination"></span>
 
 
 
 @endsection
 
+@section('css')
+    <!-- SweetAlert2 -->
+    <link rel="stylesheet" href="{{asset('adminlte')}}/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css">
+@endsection
+
 @section('script')
+    <!-- SweetAlert2 -->
+    <script src="{{asset('adminlte')}}/plugins/sweetalert2/sweetalert2.min.js"></script>
     <script>
 
-        $.ajax({
-            type: 'GET',
-            url: '{{url('/get/my-data-one')}}',
-            dataType: 'json',
-            success: function (datas) {
-                var html = '';
-                jQuery.each(datas, function (key, data) {
-                    html += myTr(data);
-                });
+        const Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 3000
+        });
 
-                $('tbody').html(html);
-            },
-            error: function (err) {
+        getData('{{url('/get/my-data-one')}}');
 
-            }
+        function getData(my_url) {
+            $.ajax({
+                type: 'GET',
+                url: my_url,
+                dataType: 'json',
+                success: function (datas) {
+                    console.log(datas);
+                    var html = '';
+                    jQuery.each(datas.my_data.data, function (key, data) {
+                        html += myTr(data);
+                    });
+                    $('tbody').html(html);
+
+                    $('#pagination').html(datas.pagination);
+                },
+                error: function (err) {
+
+                }
+            });
+        }
+
+        $("#pagination").delegate(".my_link", "click", function (event) {
+            event.preventDefault();
+            getData($(this).attr("href"));
         });
 
         $('#save').on('click', function () {
@@ -113,6 +138,7 @@
                 url: '{{url('/my-data-one')}}',
                 dataType: 'json',
                 data: {
+                    id: $('#id').text(),
                     item_code: $('#item_code').val(),
                     name: $('#name').val(),
                     barcode: $('#barcode').val(),
@@ -121,49 +147,167 @@
                     _token: $("input[name=_token]").val(),
                 },
                 success: function (data) {
-                    $('tbody').prepend(myTr(data));
-                    clear();
+                    if ($('#id').text() - 0 == 0) {
+                        $('tbody').prepend(myTr(data));
+                    } else {
+                        $('#tr_' + data.id).html('                    <td>' + data.id + '</td>\n' +
+                            '                    <td>' + data.item_code + '</td>\n' +
+                            '                    <td>' + data.name + '</td>\n' +
+                            '                    <td>' + data.barcode + '</td>\n' +
+                            '                    <td>' + data.qty + '</td>\n' +
+                            '                    <td>' + data.price + '</td>\n' +
+                            '                    <td>');
+                    }
+
+                    add_and_clear();
                     clear_err();
+                    Toast.fire({
+                        type: 'success',
+                        title: 'ទិន័យបញ្ចូលបានជោគជ័យ !!!'
+                    });
                 },
                 error: function (err) {
-                    console.log(err.responseJSON.errors);
+                    // console.log(err.responseJSON.errors);
+                    // console.log(err.responseJSON.errors);
                     jQuery.each(err.responseJSON.errors, function (key, value) {
                         $('#' + key).addClass("is-invalid");
-                        $('.er_' + key).html('<label class="col-form-label" for="inputError" style="color: red;" wfd-id="21"><i class="far fa-times-circle"></i> ' + value + '</label>');
+                        $('.er_' + key).html('<label class="col-form-label" for="inputError" style="color: red;"><i class="far fa-times-circle"></i> ' + value + '</label>');
                         $('#' + key).val('');
                     });
+                    Toast.fire({
+                        type: 'error',
+                        title: 'ទិន័យបញ្ចូលបានបរាជ័យ !!!'
+                    })
                 }
             });
         });
 
-        $('#clear').on('click',function () {
-            clear();
+        // var array__ = [
+        //     'a',
+        //     'b',
+        //     'c'
+        // ];
+        // console.log(array__);
+        // jQuery.each(array__, function (key, value) {
+        //     console.log('key = '+key+' value = '+ value);
+        // });
+        //
+        // var array_obj = {
+        //     a:'ក',
+        //     b:'ខ',
+        //     c:'គ'
+        // };
+        // console.log(array_obj);
+        // jQuery.each(array_obj, function (key, value) {
+        //     console.log('key = '+key+' value = '+ value);
+        // });
+
+        $('#clear').on('click', function () {
+            add_and_clear();
             clear_err();
         });
 
+        $("tbody").delegate(".btn-delete", "click", function () {
+            // console.log($(this).data('id'));
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.value) {
+                    $.ajax({
+                        type: 'DELETE',
+                        url: '{{url('/my-data-one')}}',
+                        dataType: 'json',
+                        data: {
+                            id: $(this).data('id'),
+                            _token: $("input[name=_token]").val(),
+                        },
+                        success: function (data) {
+                            // console.log(data);
+                            $('#tr_' + data.id).remove();
+                            Swal.fire(
+                                'Deleted!',
+                                'លុបទិន័យបានជៅគជ័យ !!!',
+                                'success'
+                            );
+                            // Toast.fire({
+                            //     type: 'success',
+                            //     title: 'លុបទិន័យបានជៅគជ័យ !!!'
+                            // });
+                            add_and_clear();
+                            clear_err();
+                        },
+                        error: function (err) {
+                            Toast.fire({
+                                type: 'error',
+                                title: 'លុបទិន័យបានបរាជ័យ !!!'
+                            });
+                            add_and_clear();
+                            clear_err();
+                        }
+                    });
+                }else {
+                    add_and_clear();
+                    clear_err();
+                }
+            })
+
+
+        });
+
         function myTr(data) {
-            return '<tr>\n' +
+            return '<tr id="tr_' + data.id + '" data-id="' + data.id + '">\n' +
                 '                    <td>' + data.id + '</td>\n' +
                 '                    <td>' + data.item_code + '</td>\n' +
                 '                    <td>' + data.name + '</td>\n' +
                 '                    <td>' + data.barcode + '</td>\n' +
                 '                    <td>' + data.qty + '</td>\n' +
                 '                    <td>' + data.price + '</td>\n' +
-                '                    <td>aaaaaa</td>\n' +
+                '                    <td>' +
+                '<button class="btn btn-block btn-danger btn-xs btn-delete" data-id="' + data.id + '">Delete</button>' +
+                '</td>\n' +
                 '                </tr>';
         }
 
-        function clear() {
-            $('#item_code').val('');
-            $('#name').val('');
-            $('#barcode').val('');
-            $('#qty').val('');
-            $('#price').val('');
+        $("tbody").delegate("tr", "click", function () {
+            $.ajax({
+                type: 'GET',
+                url: '{{url('/shoe/my-data-one')}}',
+                dataType: 'json',
+                data: {
+                    id: $(this).data('id'),
+                },
+                success: function (data) {
+                    // console.log(data);
+                    add_and_clear(data);
+                },
+                error: function (err) {
+
+                }
+            });
+        });
+
+        function add_and_clear(data = {}) {
+            $('#save').text(data.id ? 'Update' : 'Save');
+            $('#id').text(data.id ? data.id : 0);
+            $('#item_code').val(data.item_code ? data.item_code : '');
+            $('#name').val(data.name ? data.name : '');
+            $('#barcode').val(data.barcode ? data.barcode : '');
+            $('#qty').val(data.qty ? data.qty : '');
+            $('#price').val(data.price ? data.price : '');
         }
+
         function clear_err() {
             $(".required").removeClass("is-invalid");
             $(".required").html('');
         }
 
+        // eval("var bbbb = 10;");
+        // console.log(bbbb);
     </script>
 @endsection
